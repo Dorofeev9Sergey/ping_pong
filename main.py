@@ -1,4 +1,5 @@
 from pygame import *
+init()
 window = display.set_mode((700, 500))
 display.set_caption("Пинг понг")
 fon = transform.scale(image.load('background.jpg'), (700, 500))
@@ -31,16 +32,22 @@ class Player(GameSprite):
             if keys_pressed[K_DOWN] and self.rect.y < 470: 
                 self.rect.y += self.speed
 
-rocet = Player('racket.png',50, 50, 15, 40, 70)
-rocet2 = Player('racket.png',650, 50, 15, 40, 70)
+rocet = Player('racket.png',50, 50, 30, 40, 70)
+rocet2 = Player('racket.png',650, 50, 30, 40, 70)
 boll = GameSprite('ball.png', 123, 232, 0, 20, 20)
 
-speed_x = 3
-speed_y = 3
+speed_x = 10
+speed_y = 10
 
 finish = False
 
 game = True
+
+font1 = font.Font(None, 35)
+lose = font1.render('Plaer 1 lose!', True, (255, 255, 255))
+
+font2 = font.Font(None, 35)
+lose2 = font2.render('Plaer 2 lose!', True, (255, 255, 255))
 
 while game:
     for e in event.get():
@@ -59,6 +66,13 @@ while game:
         speed_y *= -1
     if sprite.collide_rect(rocet, boll)or sprite.collide_rect(rocet2, boll):
         speed_x *= -1
+    if boll.rect.x < 0:
+        finish = True
+        window.blit(lose, (300, 200))
+    if boll.rect.x > 680:
+        finish = True
+        window.blit(lose2, (300, 200))
+
     time.delay(50)
     display.update()
 
